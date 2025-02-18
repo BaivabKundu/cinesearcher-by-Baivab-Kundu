@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Button, Typography } from "neetoui";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+
+import MovieModal from "./MovieModal";
 
 const MovieCard = ({ movie }) => {
-  const { Title, Year, Poster, Type } = movie;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { Title, Year, Poster, Type, imdbID } = movie;
   const { t } = useTranslation();
 
   return (
     <div className="m-5 overflow-hidden rounded-lg border border-gray-200  bg-white shadow-md transition-all duration-200 hover:shadow-lg">
-      <div className="aspect-[2/3] w-full px-16">
+      <div className="h-80 w-full overflow-hidden px-16">
         <img
           alt={Title}
           className="h-full w-full object-cover"
@@ -29,12 +33,30 @@ const MovieCard = ({ movie }) => {
           className="text-sm font-semibold text-gray-400"
           variant="body2"
         >
-          {Type === "movie" ? "Movie" : "Series"} • {Year}
+          {Type === "movie"
+            ? t("labelText.movieLabel")
+            : t("labelText.seriesLabel")}{" "}
+          •{" "}
+          <Trans
+            components={{ span: <span /> }}
+            i18nKey="displayMessages.yearOfRelease"
+            values={{ Year }}
+          />
         </Typography>
-        <Button className="mt-4 bg-gray-100 font-bold text-blue-600">
+        <Button
+          className="mt-4 bg-gray-100 font-bold text-blue-600"
+          onClick={() => setIsModalOpen(true)}
+        >
           {t("labelText.detailsButton")}
         </Button>
       </div>
+      {isModalOpen && (
+        <MovieModal
+          imdbID={imdbID}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
