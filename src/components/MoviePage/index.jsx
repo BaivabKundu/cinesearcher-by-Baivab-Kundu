@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import PageLoader from "components/commons/PageLoader";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
@@ -48,6 +48,21 @@ const MoviePage = () => {
   const handlePageNavigation = page =>
     history.push(buildUrl(routes.root, mergeLeft({ page }, queryParams)));
 
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyPress = e => {
+      if (e.key === "/" && e.target.tagName !== "INPUT") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => document.removeEventListener("keydown", handleKeyPress);
+  }, []);
+
   if (isLoading) return <PageLoader />;
 
   return (
@@ -55,8 +70,9 @@ const MoviePage = () => {
       <div className="mx-auto mb-8 ">
         <Input
           className="rounded-lg border border-[#ddd]"
-          placeholder={t("inputPlaceholders.searchInput")}
+          placeholder={`${t("inputPlaceholders.searchInput")} (/)`}
           prefix={<Search />}
+          ref={searchInputRef}
           type="search"
           value={searchQuery}
           onChange={e => {
