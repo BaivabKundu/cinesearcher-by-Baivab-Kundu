@@ -56,8 +56,12 @@ const MovieModal = ({ isOpen, onClose, imdbID }) => {
             <div className="w-1/3 p-1">
               <img
                 alt={Title}
-                className="neeto-ui-rounded-lg object-contain"
-                src={Poster}
+                className="neeto-ui-rounded-lg h-full w-full object-cover"
+                src={
+                  Poster !== "N/A"
+                    ? Poster
+                    : "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                }
               />
             </div>
             <div className="ml-10 w-2/3 space-y-4 p-4">
@@ -67,10 +71,16 @@ const MovieModal = ({ isOpen, onClose, imdbID }) => {
               <div className="space-y-2">
                 {movieDetails.map(({ label, value }) => (
                   <div className="flex items-center gap-2" key={label}>
-                    <Typography style="body2" weight="bold">
-                      <Trans i18nKey={`labelText.${label}`} />
+                    <Typography style="body2">
+                      <Trans
+                        i18nKey="labelText.movieDetails"
+                        values={{ label, value }}
+                        components={{
+                          span1: <span className="font-bold" />,
+                          span2: <span />,
+                        }}
+                      />
                     </Typography>
-                    <Typography style="body2">{value}</Typography>
                   </div>
                 ))}
               </div>
