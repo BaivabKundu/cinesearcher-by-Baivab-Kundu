@@ -7,13 +7,7 @@
   },
   "labelText": {
     "detailsButton": "View details",
-    "Year": "Year: ",
-    "Actors": "Actors: ",
-    "Director": "Director: ",
-    "Box Office": "Box Office: ",
-    "Runtime": "Runtime: ",
-    "Language": "Language: ",
-    "Rated": "Rated: ",
+    "movieDetails": "<span1>{{label}}</span1>: <span2>{{value}}</span2>",
     "movieLabel": "Movie",
     "seriesLabel": "Series"
   },
