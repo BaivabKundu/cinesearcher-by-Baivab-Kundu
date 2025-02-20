@@ -19,7 +19,6 @@ export const useFetchMovies = ({ page, searchTerm }) => {
   const queryConfig = {
     queryKey: [QUERY_KEYS.MOVIES, page, searchTerm],
     queryFn: async () => {
-      console.log("fetching movies", page, searchTerm);
       const response = await moviesApi.fetch({ s: searchTerm, page });
 
       return handleMovieError(response);
