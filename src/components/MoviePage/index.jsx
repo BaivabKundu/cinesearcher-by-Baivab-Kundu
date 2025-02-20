@@ -14,9 +14,7 @@ import routes from "routes";
 import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "./constants";
-import MovieList from "./MovieList";
-
-import EmptyPage from "../commons/EmptyPage";
+import MovieList from "./List";
 
 const MoviePage = () => {
   const { t } = useTranslation();
@@ -28,13 +26,19 @@ const MoviePage = () => {
 
   const [searchQuery, setSearchQuery] = useState(searchTerm);
 
-  const updateQueryParams = useFuncDebounce(value => {
+  const handleUpdateQueryParams = useFuncDebounce(searchValue => {
+    if (!searchValue) {
+      history.replace(routes.movies.index);
+
+      return;
+    }
+
     const params = {
       page: DEFAULT_PAGE_NUMBER,
-      searchTerm: value || null,
+      searchTerm: searchValue,
     };
 
-    history.replace(buildUrl(routes.root, filterNonNull(params)));
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   });
 
   const moviesParams = {
@@ -42,11 +46,15 @@ const MoviePage = () => {
     page: Number(page) || DEFAULT_PAGE_NUMBER,
   };
 
-  const { data: { Search: movies = [], totalResults } = {}, isLoading } =
-    useFetchMovies(moviesParams);
+  const {
+    data: { Search: movies = [], totalResults } = {},
+    isLoading: isLoadingMovieList,
+  } = useFetchMovies(moviesParams);
 
   const handlePageNavigation = page =>
-    history.push(buildUrl(routes.root, mergeLeft({ page }, queryParams)));
+    history.push(
+      buildUrl(routes.movies.index, mergeLeft({ page }, queryParams))
+    );
 
   const searchInputRef = useRef(null);
 
@@ -63,26 +71,28 @@ const MoviePage = () => {
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  if (isLoading) return <PageLoader />;
+  if (isLoadingMovieList) return <PageLoader />;
 
   return (
-    <div className="p-8">
+    <div className="flex-1 overflow-auto p-8">
       <div className="mx-auto mb-8 ">
         <Input
           className="rounded-lg border border-[#ddd]"
-          placeholder={`${t("inputPlaceholders.searchInput")} (/)`}
+          placeholder={`${t("inputPlaceholders.searchInput")}`}
           prefix={<Search />}
           ref={searchInputRef}
           type="search"
           value={searchQuery}
-          onChange={e => {
-            setSearchQuery(e.target.value);
-            updateQueryParams(e.target.value);
+          onChange={({ target: { value } }) => {
+            setSearchQuery(value);
+            handleUpdateQueryParams(value);
           }}
         />
       </div>
       {isEmpty(searchTerm) ? (
-        <EmptyPage />
+        <div className="my-96 flex h-full justify-center text-center font-bold text-gray-500">
+          {t("displayMessages.emptySearch")}
+        </div>
       ) : (
         <>
           <MovieList movies={movies} />

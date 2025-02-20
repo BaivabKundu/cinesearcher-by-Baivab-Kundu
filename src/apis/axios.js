@@ -1,15 +1,8 @@
 import axios from "axios";
 import { t } from "i18next";
-import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
+import { keysToCamelCase } from "neetocist";
 import { Toastr } from "neetoui";
-import { evolve } from "ramda";
 import { OMDB_API_KEY, OMDB_API_URL } from "src/constants";
-
-const requestInterceptors = () => {
-  axios.interceptors.request.use(
-    evolve({ data: serializeKeysToSnakeCase, params: serializeKeysToSnakeCase })
-  );
-};
 
 const shouldShowToastr = response =>
   typeof response === "object" && response?.noticeCode;
@@ -54,8 +47,10 @@ const setHttpHeaders = () => {
 };
 
 export default function initializeAxios() {
-  axios.defaults.baseURL = `${OMDB_API_URL}${OMDB_API_KEY}`;
+  axios.defaults.baseURL = OMDB_API_URL;
+  axios.defaults.params = {
+    apikey: OMDB_API_KEY,
+  };
   setHttpHeaders();
   responseInterceptors();
-  requestInterceptors();
 }
