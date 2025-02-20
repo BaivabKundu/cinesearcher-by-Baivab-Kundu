@@ -13,7 +13,7 @@
   },
   "displayMessages": {
     "yearOfRelease": "<span>{{Year}}</span>",
-    "emptyHistory": "No search history",
+    "emptyHistory": "No movies viewed yet",
     "emptySearch": "No results found"
   },
   "errorMessages": {

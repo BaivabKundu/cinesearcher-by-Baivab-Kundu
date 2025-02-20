@@ -22,13 +22,13 @@ const ViewHistory = () => {
   }, [selectedMovie]);
 
   return (
-    <div className="h-screen w-full overflow-scroll rounded-lg bg-white p-4 shadow-lg">
+    <div className="h-screen w-full overflow-scroll border-l-2 border-gray-200 p-4">
       <h2 className="mb-4 text-center text-lg font-bold">
         {t("sectionHeadings.historySection")}
       </h2>
       <div className="max-h-[70vh] space-y-2 overflow-y-auto" ref={historyRef}>
         {isEmpty(movies) ? (
-          <div className="my-96 flex h-full justify-center text-center text-gray-500">
+          <div className="my-96 flex h-full justify-center text-center font-medium text-gray-500">
             {t("displayMessages.emptyHistory")}
           </div>
         ) : (
