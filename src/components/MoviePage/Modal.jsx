@@ -1,7 +1,9 @@
+import classNames from "classnames";
 import { useShowMovie } from "hooks/reactQuery/useMoviesApi";
 import { Modal as NeetoModal, Typography, Spinner, Tag } from "neetoui";
 import { isEmpty } from "ramda";
 import { Trans } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 
 import { DEFAULT_POSTER_URL } from "./constants";
 
@@ -35,8 +37,20 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
     { label: "Rated", value: Rated },
   ];
 
+  const isDesktop = useMediaQuery({ minWidth: 768 });
+  const isTablet = useMediaQuery({ minWidth: 640, maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxWidth: 639 });
+
   return (
-    <NeetoModal isOpen={isOpen} size="large" onClose={onClose}>
+    <NeetoModal
+      isOpen={isOpen}
+      size={classNames({
+        large: isDesktop,
+        medium: isTablet,
+        small: isMobile,
+      })}
+      onClose={onClose}
+    >
       <Header>
         <Typography style="h2" weight="bold">
           {Title}
@@ -54,15 +68,30 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
             <Spinner />
           </div>
         ) : (
-          <div className="flex h-full">
-            <div className="w-1/3 p-1">
+          <div
+            className={classNames("flex h-full", {
+              "flex-col": isMobile,
+              "flex-row": !isMobile,
+            })}
+          >
+            <div
+              className={classNames("p-1", {
+                "h-64 w-full": isMobile,
+                "w-1/3": !isMobile,
+              })}
+            >
               <img
                 alt={Title}
                 className="neeto-ui-rounded-lg h-full w-full object-cover"
                 src={Poster !== "N/A" ? Poster : DEFAULT_POSTER_URL}
               />
             </div>
-            <div className="ml-10 w-2/3 space-y-4 p-4">
+            <div
+              className={classNames("space-y-4 p-4", {
+                "w-full": isMobile,
+                "ml-10 w-2/3": !isMobile,
+              })}
+            >
               <Typography component="i" style="body2" weight="light">
                 {Plot}
               </Typography>
