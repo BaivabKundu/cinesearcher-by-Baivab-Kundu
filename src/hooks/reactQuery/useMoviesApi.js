@@ -33,7 +33,7 @@ export const useFetchMovies = params => {
 export const useShowMovie = imdbId => {
   const queryConfig = {
     queryKey: [QUERY_KEYS.MOVIES, imdbId],
-    queryFn: () => moviesApi.show({ i: imdbId }),
+    queryFn: () => moviesApi.show(imdbId),
     enabled: Boolean(imdbId),
   };
 
