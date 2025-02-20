@@ -15,16 +15,16 @@ const handleMovieError = response => {
   return response;
 };
 
-export const useFetchMovies = ({ page, searchTerm }) => {
+export const useFetchMovies = params => {
   const queryConfig = {
-    queryKey: [QUERY_KEYS.MOVIES, page, searchTerm],
+    queryKey: [QUERY_KEYS.MOVIES, params],
     queryFn: async () => {
-      const response = await moviesApi.fetch({ s: searchTerm, page });
+      const response = await moviesApi.fetch(params);
 
       return handleMovieError(response);
     },
     keepPreviousData: true,
-    enabled: Boolean({ page, searchTerm }),
+    enabled: Boolean(params),
   };
 
   return useQuery(queryConfig);
