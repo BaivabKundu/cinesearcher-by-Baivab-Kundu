@@ -16,8 +16,6 @@ import { buildUrl } from "utils/url";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "./constants";
 import MovieList from "./List";
 
-import EmptyPage from "../commons/EmptyPage";
-
 const MoviePage = () => {
   const { t } = useTranslation();
 
@@ -29,12 +27,18 @@ const MoviePage = () => {
   const [searchQuery, setSearchQuery] = useState(searchTerm);
 
   const updateQueryParams = useFuncDebounce(value => {
+    if (!value) {
+      history.replace(routes.movies.index);
+
+      return;
+    }
+
     const params = {
       page: DEFAULT_PAGE_NUMBER,
-      searchTerm: value || null,
+      searchTerm: value,
     };
 
-    history.replace(buildUrl(routes.root, filterNonNull(params)));
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   });
 
   const moviesParams = {
@@ -46,7 +50,9 @@ const MoviePage = () => {
     useFetchMovies(moviesParams);
 
   const handlePageNavigation = page =>
-    history.push(buildUrl(routes.root, mergeLeft({ page }, queryParams)));
+    history.push(
+      buildUrl(routes.movies.index, mergeLeft({ page }, queryParams))
+    );
 
   const searchInputRef = useRef(null);
 
@@ -82,7 +88,9 @@ const MoviePage = () => {
         />
       </div>
       {isEmpty(searchTerm) ? (
-        <EmptyPage />
+        <div className="my-96 flex h-full justify-center text-center font-bold text-gray-500">
+          {t("displayMessages.emptySearch")}
+        </div>
       ) : (
         <>
           <MovieList movies={movies} />
