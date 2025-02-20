@@ -8,6 +8,7 @@ import useMoviesStore from "stores/useMoviesStore";
 const ViewHistory = () => {
   const movies = useMoviesStore(state => state.movies);
   const selectedMovie = useMoviesStore(state => state.selectedMovie);
+
   const historyRef = useRef(null);
   const itemRefs = useRef({});
 
