@@ -4,9 +4,10 @@ import { Button, Typography } from "neetoui";
 import { useTranslation, Trans } from "react-i18next";
 import useMoviesStore from "stores/useMoviesStore";
 
-import MovieModal from "./MovieModal";
+import { DEFAULT_POSTER_URL } from "./constants";
+import Modal from "./Modal";
 
-const MovieCard = ({ movie }) => {
+const Card = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { setMovies, setSelectedMovie } = useMoviesStore();
@@ -20,11 +21,7 @@ const MovieCard = ({ movie }) => {
         <img
           alt={Title}
           className="h-full w-full object-cover"
-          src={
-            Poster !== "N/A"
-              ? Poster
-              : "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          }
+          src={Poster !== "N/A" ? Poster : DEFAULT_POSTER_URL}
         />
       </div>
       <div className="px-8 py-6 text-left">
@@ -61,7 +58,7 @@ const MovieCard = ({ movie }) => {
         </Button>
       </div>
       {isModalOpen && (
-        <MovieModal
+        <Modal
           imdbID={imdbID}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -71,4 +68,4 @@ const MovieCard = ({ movie }) => {
   );
 };
 
-export default MovieCard;
+export default Card;

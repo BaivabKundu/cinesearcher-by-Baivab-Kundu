@@ -14,7 +14,7 @@ import routes from "routes";
 import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "./constants";
-import MovieList from "./MovieList";
+import MovieList from "./List";
 
 import EmptyPage from "../commons/EmptyPage";
 
