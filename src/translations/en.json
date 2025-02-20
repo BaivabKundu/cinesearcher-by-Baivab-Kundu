@@ -9,7 +9,14 @@
     "detailsButton": "View details",
     "movieDetails": "<span1>{{label}}</span1>: <span2>{{value}}</span2>",
     "movieLabel": "Movie",
-    "seriesLabel": "Series"
+    "seriesLabel": "Series",
+    "directorLabel": "Director",
+    "actorsLabel": "Actors",
+    "boxOfficeLabel": "Box Office",
+    "yearLabel": "Year",
+    "runtimeLabel": "Runtime",
+    "languageLabel": "Language",
+    "ratedLabel": "Rated"
   },
   "displayMessages": {
     "yearOfRelease": "<span>{{Year}}</span>",
