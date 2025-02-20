@@ -81,9 +81,9 @@ const MoviePage = () => {
           ref={searchInputRef}
           type="search"
           value={searchQuery}
-          onChange={e => {
-            setSearchQuery(e.target.value);
-            updateQueryParams(e.target.value);
+          onChange={({ target: { value } }) => {
+            setSearchQuery(value);
+            updateQueryParams(value);
           }}
         />
       </div>
