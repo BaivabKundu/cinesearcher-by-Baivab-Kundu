@@ -3,13 +3,17 @@ import { FallbackImage } from "components/utils/FallbackImage";
 import { useShowMovie } from "hooks/reactQuery/useMoviesApi";
 import { Modal as NeetoModal, Typography, Spinner, Tag } from "neetoui";
 import { isEmpty } from "ramda";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
 const Modal = ({ isOpen, onClose, imdbID }) => {
   const { Header, Body } = NeetoModal;
 
-  const { isLoading, data: movie = {} } = useShowMovie(imdbID);
+  const { t } = useTranslation();
+
+  const { isLoading: isLoadingMovieDetails, data: movie = {} } =
+    useShowMovie(imdbID);
+
   const {
     Title,
     Year,
@@ -27,13 +31,13 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
   const genres = Genre ? Genre.split(", ") : [];
 
   const movieDetails = [
-    { label: "Director", value: Director },
-    { label: "Actors", value: Actors },
-    { label: "Box Office", value: BoxOffice },
-    { label: "Year", value: Year },
-    { label: "Runtime", value: Runtime },
-    { label: "Language", value: Language },
-    { label: "Rated", value: Rated },
+    { label: t("labelText.directorLabel"), value: Director },
+    { label: t("labelText.actorsLabel"), value: Actors },
+    { label: t("labelText.boxOfficeLabel"), value: BoxOffice },
+    { label: t("labelText.yearLabel"), value: Year },
+    { label: t("labelText.runtimeLabel"), value: Runtime },
+    { label: t("labelText.languageLabel"), value: Language },
+    { label: t("labelText.ratedLabel"), value: Rated },
   ];
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -62,7 +66,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
           ))}
       </Header>
       <Body>
-        {isLoading ? (
+        {isLoadingMovieDetails ? (
           <div className="flex h-64 items-center justify-center">
             <Spinner />
           </div>
