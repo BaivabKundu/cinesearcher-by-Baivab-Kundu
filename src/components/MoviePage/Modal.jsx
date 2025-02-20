@@ -1,11 +1,10 @@
 import classNames from "classnames";
+import { FallbackImage } from "components/utils/FallbackImage";
 import { useShowMovie } from "hooks/reactQuery/useMoviesApi";
 import { Modal as NeetoModal, Typography, Spinner, Tag } from "neetoui";
 import { isEmpty } from "ramda";
 import { Trans } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-
-import { DEFAULT_POSTER_URL } from "./constants";
 
 const Modal = ({ isOpen, onClose, imdbID }) => {
   const { Header, Body } = NeetoModal;
@@ -80,11 +79,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
                 "w-1/3": !isMobile,
               })}
             >
-              <img
-                alt={Title}
-                className="neeto-ui-rounded-lg h-full w-full object-cover"
-                src={Poster !== "N/A" ? Poster : DEFAULT_POSTER_URL}
-              />
+              <FallbackImage poster={Poster} title={Title} />
             </div>
             <div
               className={classNames("space-y-4 p-4", {

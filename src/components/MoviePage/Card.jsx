@@ -4,8 +4,9 @@ import { Button, Typography } from "neetoui";
 import { useTranslation, Trans } from "react-i18next";
 import useMoviesStore from "stores/useMoviesStore";
 
-import { DEFAULT_POSTER_URL } from "./constants";
 import Modal from "./Modal";
+
+import { FallbackImage } from "../utils/FallbackImage";
 
 const Card = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,11 +19,7 @@ const Card = ({ movie }) => {
   return (
     <div className="my-3 overflow-hidden rounded-lg border border-gray-200  bg-white shadow-md transition-all duration-200 hover:shadow-lg">
       <div className="h-80 w-full overflow-hidden px-12">
-        <img
-          alt={Title}
-          className="h-full w-full object-cover"
-          src={Poster !== "N/A" ? Poster : DEFAULT_POSTER_URL}
-        />
+        <FallbackImage poster={Poster} title={Title} />
       </div>
       <div className="px-8 py-6 text-left">
         <Typography
