@@ -3,7 +3,7 @@
     "historySection": "View history"
   },
   "inputPlaceholders": {
-    "searchInput": "Search movies and series"
+    "searchInput": "Search movies and series (Press / to focus)"
   },
   "labelText": {
     "detailsButton": "View details",
@@ -27,46 +27,5 @@
       "description": "Return to home page"
     }
   },
-  "navigationText": {
-    "goToHome": "Go to home"
-  },
-  "favorites": {
-    "noFavorites": "No favorites found",
-    "rating": "Rating:"
-  },
-  "tooltips": {
-    "addToFavorites": "Add to favorites",
-    "removeFromFavorites": "Remove from favorites"
-  },
-  "labels": {
-    "year": "Year",
-    "type": "Type",
-    "movie": "Movie",
-    "series": "Series",
-    "yearPlaceholder": "Enter year"
-  },
-  "history": {
-    "clearAll": "Clear all",
-    "confirmClear": {
-      "title": "Clear history",
-      "message": "This will permanently remove all search history",
-      "confirm": "Clear",
-      "cancel": "Cancel"
-    },
-    "confirmDelete": {
-      "title": "Delete \"{{title}}\"",
-      "message": "Are you sure you want to delete \"{{title}}\" from history?",
-      "confirm": "Delete",
-      "cancel": "Cancel"
-    }
-  },
-  "historyMovieNames": "<span>{{Title}}</span>",
-  "header": {
-    "logo": {
-      "first": "Cine",
-      "second": "Searcher"
-    },
-    "home": "Home",
-    "favorites": "Favorites"
-  }
+  "historyMovieNames": "<span>{{Title}}</span>"
 }

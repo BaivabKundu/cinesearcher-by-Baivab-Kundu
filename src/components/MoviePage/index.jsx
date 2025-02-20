@@ -70,7 +70,7 @@ const MoviePage = () => {
       <div className="mx-auto mb-8 ">
         <Input
           className="rounded-lg border border-[#ddd]"
-          placeholder={`${t("inputPlaceholders.searchInput")} (/)`}
+          placeholder={`${t("inputPlaceholders.searchInput")}`}
           prefix={<Search />}
           ref={searchInputRef}
           type="search"
