@@ -11,9 +11,10 @@ import { FallbackImage } from "../utils/FallbackImage";
 const Card = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { setMovies, setSelectedMovie } = useMoviesStore();
+  const { setMovies, setLastSelectedMovie } = useMoviesStore();
 
   const { Title, Year, Poster, Type, imdbID } = movie;
+
   const { t } = useTranslation();
 
   return (
@@ -48,7 +49,7 @@ const Card = ({ movie }) => {
           onClick={() => {
             setIsModalOpen(true);
             setMovies(movie);
-            setSelectedMovie(movie);
+            setLastSelectedMovie({ ...movie });
           }}
         >
           {t("labelText.detailsButton")}

@@ -26,8 +26,8 @@ const MoviePage = () => {
 
   const [searchQuery, setSearchQuery] = useState(searchTerm);
 
-  const updateQueryParams = useFuncDebounce(value => {
-    if (!value) {
+  const handleUpdateQueryParams = useFuncDebounce(searchValue => {
+    if (!searchValue) {
       history.replace(routes.movies.index);
 
       return;
@@ -35,7 +35,7 @@ const MoviePage = () => {
 
     const params = {
       page: DEFAULT_PAGE_NUMBER,
-      searchTerm: value,
+      searchTerm: searchValue,
     };
 
     history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
@@ -46,8 +46,10 @@ const MoviePage = () => {
     page: Number(page) || DEFAULT_PAGE_NUMBER,
   };
 
-  const { data: { Search: movies = [], totalResults } = {}, isLoading } =
-    useFetchMovies(moviesParams);
+  const {
+    data: { Search: movies = [], totalResults } = {},
+    isLoading: isLoadingMovieList,
+  } = useFetchMovies(moviesParams);
 
   const handlePageNavigation = page =>
     history.push(
@@ -69,10 +71,10 @@ const MoviePage = () => {
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  if (isLoading) return <PageLoader />;
+  if (isLoadingMovieList) return <PageLoader />;
 
   return (
-    <div className="p-8">
+    <div className="flex-1 overflow-auto p-8">
       <div className="mx-auto mb-8 ">
         <Input
           className="rounded-lg border border-[#ddd]"
@@ -83,7 +85,7 @@ const MoviePage = () => {
           value={searchQuery}
           onChange={({ target: { value } }) => {
             setSearchQuery(value);
-            updateQueryParams(value);
+            handleUpdateQueryParams(value);
           }}
         />
       </div>

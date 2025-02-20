@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 const useMoviesStore = create(set => ({
   movies: [],
-  selectedMovie: null,
+  lastSelectedMovie: null,
   setMovies: movie =>
     set(state => ({
       movies: pipe(
@@ -11,7 +11,7 @@ const useMoviesStore = create(set => ({
         uniqBy(m => m.imdbID)
       )(state.movies),
     })),
-  setSelectedMovie: movie => set({ selectedMovie: movie }),
+  setLastSelectedMovie: movie => set({ lastSelectedMovie: movie }),
 }));
 
 export default useMoviesStore;

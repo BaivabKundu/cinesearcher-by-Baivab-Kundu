@@ -7,7 +7,7 @@ import useMoviesStore from "stores/useMoviesStore";
 
 const ViewHistory = () => {
   const movies = useMoviesStore(state => state.movies);
-  const selectedMovie = useMoviesStore(state => state.selectedMovie);
+  const lastSelectedMovie = useMoviesStore(state => state.lastSelectedMovie);
 
   const historyRef = useRef(null);
   const itemRefs = useRef({});
@@ -15,12 +15,13 @@ const ViewHistory = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (selectedMovie) {
-      itemRefs.current[selectedMovie.Title]?.scrollIntoView({
+    if (lastSelectedMovie) {
+      itemRefs.current[lastSelectedMovie.imdbID]?.scrollIntoView({
         behavior: "smooth",
+        block: "center",
       });
     }
-  }, [selectedMovie]);
+  }, [lastSelectedMovie]);
 
   return (
     <div className="h-screen w-full overflow-scroll border-l-2 border-gray-200 p-4">
@@ -35,11 +36,11 @@ const ViewHistory = () => {
         ) : (
           movies.map((movie, index) => (
             <div
-              key={`${movie.Title}-${index}`}
-              ref={el => (itemRefs.current[movie.Title] = el)}
+              key={`${movie.imdbID}-${index}`}
+              ref={el => (itemRefs.current[movie.imdbID] = el)}
               className={classNames(
                 "rounded-lg p-3 text-center transition-colors",
-                movie === selectedMovie
+                movie.imdbID === lastSelectedMovie?.imdbID
                   ? "bg-blue-600 text-white"
                   : "bg-blue-100 text-black"
               )}
