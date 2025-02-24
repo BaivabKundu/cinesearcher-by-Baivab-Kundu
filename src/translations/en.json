@@ -10,7 +10,7 @@
   },
   "inputPlaceholders": {
     "searchInput": "Search movies and series (Press / to focus)",
-    "yearInput": "YYYY"
+    "yearInput": "Enter year"
   },
   "labelText": {
     "detailsButton": "View details",

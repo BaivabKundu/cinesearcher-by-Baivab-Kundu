@@ -86,13 +86,12 @@ const MoviePage = () => {
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  if (isLoadingMovieList) return <PageLoader />;
-
   return (
     <div className="flex-1 overflow-auto p-8">
       <div className="mx-auto mb-8 flex items-center gap-2">
         <Input
           className="rounded-lg"
+          name="search"
           placeholder={`${t("inputPlaceholders.searchInput")}`}
           prefix={<Search />}
           ref={searchInputRef}
@@ -102,17 +101,23 @@ const MoviePage = () => {
         />
         <Filter searchTerm={searchTerm} />
       </div>
-      {!isEmpty(searchTerm) && (
+      {isLoadingMovieList ? (
+        <PageLoader />
+      ) : (
         <>
-          <MovieList movies={movies} />
-          <div className="my-5 flex justify-center">
-            <Pagination
-              count={totalResults}
-              navigate={handlePageNavigation}
-              pageNo={Number(page) || DEFAULT_PAGE_NUMBER}
-              pageSize={DEFAULT_PAGE_SIZE}
-            />
-          </div>
+          {!isEmpty(searchTerm) && (
+            <>
+              <MovieList movies={movies} />
+              <div className="my-5 flex justify-center">
+                <Pagination
+                  count={totalResults}
+                  navigate={handlePageNavigation}
+                  pageNo={Number(page) || DEFAULT_PAGE_NUMBER}
+                  pageSize={DEFAULT_PAGE_SIZE}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

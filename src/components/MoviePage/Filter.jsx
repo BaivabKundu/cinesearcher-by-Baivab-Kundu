@@ -94,10 +94,22 @@ const Filter = ({ searchTerm }) => {
           <Input
             className="w-full"
             error={yearError}
+            pattern="[0-9]*"
             placeholder={t("inputPlaceholders.yearInput")}
-            rejectCharsRegex={/[a-zA-Z]/}
+            type="number"
             value={yearInput}
             onChange={event => handleYearChange(event.target.value)}
+            onKeyDown={event => {
+              if (!/[0-9]/.test(event.key)) {
+                event.preventDefault();
+              }
+            }}
+            onPaste={event => {
+              const pastedText = event.clipboardData.getData("text");
+              if (!/^\d+$/.test(pastedText)) {
+                event.preventDefault();
+              }
+            }}
           />
         </div>
         <div>
