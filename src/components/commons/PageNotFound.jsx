@@ -1,16 +1,19 @@
+import { t } from "i18next";
 import { NoData } from "neetoui";
+import routes from "routes";
+import withTitle from "utils/withTitle";
 
 const PageNotFound = () => (
-  <div className="absolute left-1/3 top-1/3">
+  <div className="mt-96 flex h-full justify-center">
     <NoData
-      title="The page you're looking for can't be found"
+      title={t("errorPages.notFound.title")}
       primaryButtonProps={{
-        label: "Back to home",
+        label: t("errorPages.notFound.description"),
         className: "bg-neutral-800 hover:bg-neutral-950",
-        to: "/",
+        to: routes.root,
       }}
     />
   </div>
 );
 
-export default PageNotFound;
+export default withTitle(PageNotFound, t("errorPages.notFound.title"));
