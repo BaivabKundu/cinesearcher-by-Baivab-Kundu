@@ -39,9 +39,9 @@ const ViewHistory = () => {
   return (
     <div className="h-screen w-full overflow-scroll border-l-2 border-gray-200 p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold">
+        <Typography className="font-bold" variant="h2">
           {t("sectionHeadings.historySection")}
-        </h2>
+        </Typography>
         {!isEmpty(movies) && (
           <Button
             label={t("buttons.clearAll")}

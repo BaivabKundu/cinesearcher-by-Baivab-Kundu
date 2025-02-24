@@ -4,7 +4,7 @@ import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
 import { Filter as FilterIcon, Close } from "neetoicons";
-import { Dropdown, Checkbox, Input } from "neetoui";
+import { Dropdown, Checkbox, Input, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
@@ -90,7 +90,9 @@ const Filter = ({ searchTerm }) => {
           />
         </div>
         <div className="mb-4">
-          <p className="mb-2 font-medium">{t("labelText.year")}</p>
+          <Typography className="mb-2 font-medium" variant="body1">
+            {t("labelText.year")}
+          </Typography>
           <Input
             className="w-full"
             error={yearError}
@@ -113,7 +115,9 @@ const Filter = ({ searchTerm }) => {
           />
         </div>
         <div>
-          <p className="mb-2 font-medium">{t("labelText.type")}</p>
+          <Typography className="mb-2 font-medium" variant="body1">
+            {t("labelText.type")}
+          </Typography>
           <div className="flex gap-6">
             <Checkbox
               checked={!queryParams.type || queryParams.type === "movie"}

@@ -1,5 +1,6 @@
 import PageLoader from "components/commons/PageLoader";
 import { t } from "i18next";
+import { Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { Trans } from "react-i18next";
 import useFavouriteMoviesStore from "stores/useFavouriteMoviesStore";
@@ -23,7 +24,7 @@ const Favourites = () => {
             key={imdbID}
           >
             <div>
-              <h3 className="text-lg font-medium text-gray-900">
+              <Typography className="text-gray-900" variant="h3">
                 <Trans
                   i18nKey="favourites.movieTitle"
                   values={{ title: Title }}
@@ -31,7 +32,7 @@ const Favourites = () => {
                     span: <span className="font-bold text-gray-700" />,
                   }}
                 />
-              </h3>
+              </Typography>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-500">
@@ -48,9 +49,9 @@ const Favourites = () => {
           </div>
         ))}
         {isEmpty(favouriteMovies) && (
-          <p className="mt-96 text-center text-gray-500">
+          <Typography className="mt-96 text-center text-gray-500">
             <Trans i18nKey="favourites.noFavorites" />
-          </p>
+          </Typography>
         )}
       </div>
     </div>
