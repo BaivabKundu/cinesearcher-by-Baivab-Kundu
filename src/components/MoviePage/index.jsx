@@ -11,9 +11,11 @@ import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
+import useHomeQueryParamsStore from "stores/useHomeQueryParamsStore";
 import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "./constants";
+import Filter from "./Filter";
 import MovieList from "./List";
 
 const MoviePage = () => {
@@ -22,46 +24,59 @@ const MoviePage = () => {
   const history = useHistory();
 
   const queryParams = useQueryParams();
-  const { page, searchTerm = "" } = queryParams;
+  const { page, searchTerm = "", type, year } = queryParams;
 
   const [searchQuery, setSearchQuery] = useState(searchTerm);
 
   const handleUpdateQueryParams = useFuncDebounce(searchValue => {
     if (!searchValue) {
-      history.replace(routes.movies.index);
+      history.push(routes.movies);
 
       return;
     }
 
     const params = {
-      page: DEFAULT_PAGE_NUMBER,
-      searchTerm: searchValue,
+      page: DEFAULT_PAGE_NUMBER || undefined,
+      searchTerm: searchValue || undefined,
+      type: type || undefined,
+      year: year || undefined,
     };
 
-    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+    history.push(buildUrl(routes.movies, filterNonNull(params)));
   });
 
   const moviesParams = {
-    searchTerm,
+    searchTerm: searchTerm || undefined,
     page: Number(page) || DEFAULT_PAGE_NUMBER,
+    year: year || undefined,
+    type: type || undefined,
   };
 
   const {
     data: { Search: movies = [], totalResults } = {},
     isLoading: isLoadingMovieList,
-  } = useFetchMovies(moviesParams);
+  } = useFetchMovies(isEmpty(searchTerm) ? null : moviesParams);
 
   const handlePageNavigation = page =>
-    history.push(
-      buildUrl(routes.movies.index, mergeLeft({ page }, queryParams))
-    );
+    history.push(buildUrl(routes.movies, mergeLeft({ page }, queryParams)));
 
   const searchInputRef = useRef(null);
 
+  const setHomeQueryParams = useHomeQueryParamsStore.pickFrom();
+
+  const handleInputOnChange = ({ target: { value } }) => {
+    setSearchQuery(value);
+    handleUpdateQueryParams(value);
+  };
+
   useEffect(() => {
-    const handleKeyPress = e => {
-      if (e.key === "/" && e.target.tagName !== "INPUT") {
-        e.preventDefault();
+    setHomeQueryParams(queryParams);
+  }, [queryParams]);
+
+  useEffect(() => {
+    const handleKeyPress = event => {
+      if (event.key === "/" && event.target.tagName !== "INPUT") {
+        event.preventDefault();
         searchInputRef.current?.focus();
       }
     };
@@ -75,28 +90,22 @@ const MoviePage = () => {
 
   return (
     <div className="flex-1 overflow-auto p-8">
-      <div className="mx-auto mb-8 ">
+      <div className="mx-auto mb-8 flex items-center gap-2">
         <Input
-          className="rounded-lg border border-[#ddd]"
+          className="rounded-lg"
           placeholder={`${t("inputPlaceholders.searchInput")}`}
           prefix={<Search />}
           ref={searchInputRef}
           type="search"
           value={searchQuery}
-          onChange={({ target: { value } }) => {
-            setSearchQuery(value);
-            handleUpdateQueryParams(value);
-          }}
+          onChange={handleInputOnChange}
         />
+        <Filter searchTerm={searchTerm} />
       </div>
-      {isEmpty(searchTerm) ? (
-        <div className="my-96 flex h-full justify-center text-center font-bold text-gray-500">
-          {t("displayMessages.emptySearch")}
-        </div>
-      ) : (
+      {!isEmpty(searchTerm) && (
         <>
           <MovieList movies={movies} />
-          <div className="flex justify-center">
+          <div className="my-5 flex justify-center">
             <Pagination
               count={totalResults}
               navigate={handlePageNavigation}
