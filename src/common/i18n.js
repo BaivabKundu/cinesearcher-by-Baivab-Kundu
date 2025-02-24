@@ -9,6 +9,5 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
-  detection: { order: ["navigator"] },
 });
 export default i18n;

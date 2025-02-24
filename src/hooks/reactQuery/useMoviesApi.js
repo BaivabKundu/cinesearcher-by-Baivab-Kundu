@@ -23,8 +23,7 @@ export const useFetchMovies = params => {
 
       return handleMovieError(response);
     },
-    keepPreviousData: true,
-    enabled: Boolean(params),
+    enabled: !!params,
   };
 
   return useQuery(queryConfig);
@@ -34,7 +33,7 @@ export const useShowMovie = imdbId => {
   const queryConfig = {
     queryKey: [QUERY_KEYS.MOVIES, imdbId],
     queryFn: () => moviesApi.show(imdbId),
-    enabled: Boolean(imdbId),
+    enabled: !!imdbId,
   };
 
   return useQuery(queryConfig);
