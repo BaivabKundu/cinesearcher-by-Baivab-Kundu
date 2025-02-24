@@ -1,9 +1,7 @@
 const routes = {
   root: "/",
-  movies: {
-    index: "/movies",
-    search: "/movies/search",
-  },
+  movies: "/movies",
+  favourites: "/favourites",
 };
 
 export default routes;
