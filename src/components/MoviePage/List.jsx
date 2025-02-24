@@ -9,7 +9,7 @@ const List = ({ movies }) => {
   return (
     <>
       {isEmpty(movies) ? (
-        <div className="my-96 flex h-full justify-center text-center font-bold text-gray-500">
+        <div className="my-80 flex h-full justify-center text-center font-bold text-gray-500">
           {t("displayMessages.emptySearch")}
         </div>
       ) : (
