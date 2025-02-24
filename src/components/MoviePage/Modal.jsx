@@ -1,15 +1,23 @@
 import classNames from "classnames";
 import { FallbackImage } from "components/utils/FallbackImage";
+import MovieDetailsConfig from "components/utils/MovieDetailsConfig";
 import { useShowMovie } from "hooks/reactQuery/useMoviesApi";
-import { Modal as NeetoModal, Typography, Spinner, Tag } from "neetoui";
+import { existsBy } from "neetocist";
+import { RatingFilled } from "neetoicons";
+import { Button, Modal as NeetoModal, Spinner, Tag, Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { Trans, useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
+import useFavouriteMoviesStore from "stores/useFavouriteMoviesStore";
 
 const Modal = ({ isOpen, onClose, imdbID }) => {
   const { Header, Body } = NeetoModal;
 
   const { t } = useTranslation();
+
+  const favouriteMovies = useFavouriteMoviesStore.pickFrom();
+  const addFavouriteMovie = useFavouriteMoviesStore.pickFrom();
+  const removeFavouriteMovie = useFavouriteMoviesStore.pickFrom();
 
   const { isLoading: isLoadingMovieDetails, data: movie = {} } =
     useShowMovie(imdbID);
@@ -30,19 +38,29 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
 
   const genres = Genre ? Genre.split(", ") : [];
 
-  const movieDetails = [
-    { label: t("labelText.directorLabel"), value: Director },
-    { label: t("labelText.actorsLabel"), value: Actors },
-    { label: t("labelText.boxOfficeLabel"), value: BoxOffice },
-    { label: t("labelText.yearLabel"), value: Year },
-    { label: t("labelText.runtimeLabel"), value: Runtime },
-    { label: t("labelText.languageLabel"), value: Language },
-    { label: t("labelText.ratedLabel"), value: Rated },
-  ];
+  const movieDetails = MovieDetailsConfig({
+    Director,
+    Actors,
+    BoxOffice,
+    Year,
+    Runtime,
+    Language,
+    Rated,
+  });
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
   const isTablet = useMediaQuery({ minWidth: 640, maxWidth: 767 });
   const isMobile = useMediaQuery({ maxWidth: 639 });
+
+  const isFavouritedMovie = existsBy({ imdbID }, favouriteMovies);
+
+  const handleFavoriteClick = () => {
+    if (isFavouritedMovie) {
+      removeFavouriteMovie(imdbID);
+    } else {
+      addFavouriteMovie(movie);
+    }
+  };
 
   return (
     <NeetoModal
@@ -55,9 +73,34 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
       onClose={onClose}
     >
       <Header>
-        <Typography style="h2" weight="bold">
-          {Title}
-        </Typography>
+        <div className="flex items-center gap-3">
+          <Typography style="h2" weight="bold">
+            {Title}
+          </Typography>
+          {!isLoadingMovieDetails && (
+            <Button
+              className="focus:outline-none"
+              style="link"
+              tooltipProps={{
+                content: isFavouritedMovie
+                  ? t("labelText.removeFromFavourites")
+                  : t("labelText.addToFavourites"),
+                position: t("labelText.tooltipPosition"),
+              }}
+              onClick={handleFavoriteClick}
+            >
+              <RatingFilled
+                size={24}
+                className={classNames(
+                  "transition-colors duration-200",
+                  isFavouritedMovie
+                    ? "text-yellow-400"
+                    : "text-gray-400 hover:text-yellow-400"
+                )}
+              />
+            </Button>
+          )}
+        </div>
         {!isEmpty(genres) &&
           genres.map(genre => (
             <Tag className="my-3 mr-2" key={genre} type="solid">
