@@ -1,3 +1,19 @@
+import dayjs from "dayjs";
+import { t } from "i18next";
+import * as yup from "yup";
+
+export const yearSchema = yup
+  .number()
+  .min(1888, t("errorMessages.yearMinError"))
+  .max(
+    dayjs().year() + 5,
+    t("errorMessages.yearMaxError", {
+      maxYear: dayjs().year() + 5,
+    })
+  )
+  .nullable()
+  .transform(value => (isNaN(value) ? null : value));
+
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_POSTER_URL =
