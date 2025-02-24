@@ -11,15 +11,17 @@ import { FallbackImage } from "../utils/FallbackImage";
 const Card = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { setMovies, setLastSelectedMovie } = useMoviesStore();
+  const { addMovieToHistory, setLastSelectedMovie } = useMoviesStore();
 
   const { Title, Year, Poster, Type, imdbID } = movie;
 
   const { t } = useTranslation();
 
+  const type = Type === "movie" ? t("labelText.movie") : t("labelText.series");
+
   return (
     <div className="my-3 overflow-hidden rounded-lg border border-gray-200  bg-white shadow-md transition-all duration-200 hover:shadow-lg">
-      <div className="h-80 w-full overflow-hidden px-12">
+      <div className="mt-4 h-80 w-full overflow-hidden px-12">
         <FallbackImage poster={Poster} title={Title} />
       </div>
       <div className="px-8 py-6 text-left">
@@ -33,14 +35,13 @@ const Card = ({ movie }) => {
           className="text-sm font-semibold text-gray-400"
           variant="body2"
         >
-          {Type === "movie"
-            ? t("labelText.movieLabel")
-            : t("labelText.seriesLabel")}{" "}
-          •{" "}
           <Trans
-            components={{ span: <span /> }}
-            i18nKey="displayMessages.yearOfRelease"
-            values={{ Year }}
+            i18nKey="displayMessages.movieInfo"
+            values={{ type, Year }}
+            components={{
+              span1: <span />,
+              span2: <span />,
+            }}
           />
         </Typography>
         <Button
@@ -48,7 +49,7 @@ const Card = ({ movie }) => {
           style="link"
           onClick={() => {
             setIsModalOpen(true);
-            setMovies(movie);
+            addMovieToHistory(movie);
             setLastSelectedMovie({ ...movie });
           }}
         >
