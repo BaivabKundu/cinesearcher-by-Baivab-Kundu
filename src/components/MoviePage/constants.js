@@ -1,15 +1,12 @@
 import dayjs from "dayjs";
-import { t } from "i18next";
 import * as yup from "yup";
 
 export const yearSchema = yup
   .number()
-  .min(1888, t("errorMessages.yearMinError"))
+  .min(1888, "Year must be at least 1888")
   .max(
     dayjs().year() + 5,
-    t("errorMessages.yearMaxError", {
-      maxYear: dayjs().year() + 5,
-    })
+    `Year must be less than or equal to ${dayjs().year() + 5}`
   )
   .nullable()
   .transform(value => (isNaN(value) ? null : value));

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useFuncDebounce from "hooks/useFuncDebounce";
+import useKeyboardNavigation from "hooks/useKeyboardNavigation";
 import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
 import { Search } from "neetoicons";
@@ -36,20 +37,20 @@ const MoviePage = () => {
     }
 
     const params = {
-      page: DEFAULT_PAGE_NUMBER || undefined,
-      searchTerm: searchValue || undefined,
-      type: type || undefined,
-      year: year || undefined,
+      page: DEFAULT_PAGE_NUMBER,
+      searchTerm: searchValue,
+      type,
+      year,
     };
 
     history.push(buildUrl(routes.movies, filterNonNull(params)));
   });
 
   const moviesParams = {
-    searchTerm: searchTerm || undefined,
+    searchTerm,
     page: Number(page) || DEFAULT_PAGE_NUMBER,
-    year: year || undefined,
-    type: type || undefined,
+    year,
+    type,
   };
 
   const {
@@ -73,18 +74,7 @@ const MoviePage = () => {
     setHomeQueryParams(queryParams);
   }, [queryParams]);
 
-  useEffect(() => {
-    const handleKeyPress = event => {
-      if (event.key === "/" && event.target.tagName !== "INPUT") {
-        event.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyPress);
-
-    return () => document.removeEventListener("keydown", handleKeyPress);
-  }, []);
+  useKeyboardNavigation("/", searchInputRef);
 
   return (
     <div className="flex-1 overflow-auto p-8">
@@ -92,7 +82,7 @@ const MoviePage = () => {
         <Input
           className="rounded-lg"
           name="search"
-          placeholder={`${t("inputPlaceholders.searchInput")}`}
+          placeholder={t("inputPlaceholders.searchInput")}
           prefix={<Search />}
           ref={searchInputRef}
           type="search"

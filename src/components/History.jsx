@@ -8,23 +8,29 @@ import { useTranslation, Trans } from "react-i18next";
 import useMoviesStore from "stores/useMoviesStore";
 
 const ViewHistory = () => {
-  const movies = useMoviesStore.pickFrom();
-  const lastSelectedMovie = useMoviesStore.pickFrom();
-  const removeMovieFromHistory = useMoviesStore.pickFrom();
-  const clearAllMoviesFromHistory = useMoviesStore.pickFrom();
-
   const [shouldShowDeleteAlert, setShouldShowDeleteAlert] = useState(false);
   const [movieToDelete, setMovieToDelete] = useState(null);
   const [shouldShowClearAlert, setShouldShowClearAlert] = useState(false);
 
+  const {
+    movies,
+    lastSelectedMovie,
+    removeMovieFromHistory,
+    clearAllMoviesFromHistory,
+  } = useMoviesStore.pick();
+
+  // const lastSelectedMovie = useMoviesStore.pickFrom();
+  // const removeMovieFromHistory = useMoviesStore.pickFrom();
+  // const clearAllMoviesFromHistory = useMoviesStore.pickFrom();
+
   const historyRef = useRef(null);
-  const itemRefs = useRef({});
+  const itemRef = useRef(null);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (lastSelectedMovie) {
-      itemRefs.current[lastSelectedMovie.imdbID]?.scrollIntoView({
+    if (lastSelectedMovie && itemRef.current) {
+      itemRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
@@ -37,10 +43,10 @@ const ViewHistory = () => {
   };
 
   return (
-    <div className="h-screen w-full overflow-scroll border-l-2 border-gray-200 p-4">
+    <div className="w-full overflow-auto border-l-2 border-gray-200 p-4">
       <div className="mb-4 flex items-center justify-between">
         <Typography className="font-bold" variant="h2">
-          {t("sectionHeadings.historySection")}
+          {t("headings.historySection")}
         </Typography>
         {!isEmpty(movies) && (
           <Button
@@ -54,13 +60,13 @@ const ViewHistory = () => {
       <div className="max-h-[70vh] space-y-2 overflow-y-auto" ref={historyRef}>
         {isEmpty(movies) ? (
           <div className="my-96 flex h-full justify-center text-center font-medium text-gray-500">
-            {t("displayMessages.emptyHistory")}
+            {t("messages.display.emptyHistory")}
           </div>
         ) : (
           movies.map(movie => (
             <div
               key={movie.imdbID}
-              ref={element => (itemRefs.current[movie.imdbID] = element)}
+              ref={movie.imdbID === lastSelectedMovie?.imdbID ? itemRef : null}
               className={classNames(
                 "flex items-center justify-between rounded-lg p-3 transition-colors",
                 movie.imdbID === lastSelectedMovie?.imdbID
@@ -83,13 +89,13 @@ const ViewHistory = () => {
       </div>
       <Alert
         isOpen={shouldShowDeleteAlert}
-        submitButtonLabel={t("alerts.deleteMovie.confirmButton")}
-        title={t("alerts.deleteMovie.title")}
+        submitButtonLabel={t("messages.alerts.deleteMovie.confirmButton")}
+        title={t("messages.alerts.deleteMovie.title")}
         message={
           <Typography>
             <Trans
               components={{ strong: <strong /> }}
-              i18nKey="alerts.deleteMovie.message"
+              i18nKey="messages.alerts.deleteMovie.message"
               values={{ movieTitle: movieToDelete?.Title }}
             />
           </Typography>
@@ -102,9 +108,11 @@ const ViewHistory = () => {
       />
       <Alert
         isOpen={shouldShowClearAlert}
-        message={<Typography>{t("alerts.clearHistory.message")}</Typography>}
-        submitButtonLabel={t("alerts.clearHistory.confirmButton")}
-        title={t("alerts.clearHistory.title")}
+        submitButtonLabel={t("messages.alerts.clearHistory.confirmButton")}
+        title={t("messages.alerts.clearHistory.title")}
+        message={
+          <Typography>{t("messages.alerts.clearHistory.message")}</Typography>
+        }
         onClose={() => setShouldShowClearAlert(false)}
         onSubmit={() => {
           clearAllMoviesFromHistory();

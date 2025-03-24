@@ -1,4 +1,4 @@
-import PageLoader from "components/commons/PageLoader";
+// import PageLoader from "components/commons/PageLoader";
 import { t } from "i18next";
 import { Typography } from "neetoui";
 import { isEmpty } from "ramda";
@@ -9,11 +9,11 @@ import withTitle from "utils/withTitle";
 const Favourites = () => {
   const favouriteMovies = useFavouriteMoviesStore.pickFrom();
 
-  const hasHydrated = useFavouriteMoviesStore.persist.hasHydrated;
+  // const hasHydrated = useFavouriteMoviesStore.persist.hasHydrated;
 
-  if (!hasHydrated) {
-    return <PageLoader />;
-  }
+  // if (!hasHydrated) {
+  //   return <PageLoader />;
+  // }
 
   return (
     <div className="mt-20 p-6">

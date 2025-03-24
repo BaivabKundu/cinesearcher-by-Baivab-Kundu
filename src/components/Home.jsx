@@ -9,7 +9,7 @@ const Home = () => (
     <div className="col-span-3 mt-5 overflow-y-auto">
       <MoviePage />
     </div>
-    <div className="col-span-1 mx-4 my-10 flex h-full justify-center overflow-y-auto">
+    <div className="col-span-1 mx-4 my-10 flex justify-center overflow-y-auto">
       <History />
     </div>
   </div>

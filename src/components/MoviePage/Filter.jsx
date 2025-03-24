@@ -48,13 +48,11 @@ const Filter = ({ searchTerm }) => {
   };
 
   const handleTypeChange = typeValue => {
-    let newType;
+    let newType = undefined;
 
     if (!queryParams.type) {
       newType = typeValue === "movie" ? "series" : "movie";
     } else if (queryParams.type === typeValue) {
-      newType = undefined;
-    } else {
       newType = undefined;
     }
 
@@ -91,7 +89,7 @@ const Filter = ({ searchTerm }) => {
         </div>
         <div className="mb-4">
           <Typography className="mb-2 font-medium" variant="body1">
-            {t("labelText.year")}
+            {t("labels.year")}
           </Typography>
           <Input
             className="w-full"
@@ -100,33 +98,33 @@ const Filter = ({ searchTerm }) => {
             placeholder={t("inputPlaceholders.yearInput")}
             type="number"
             value={yearInput}
-            onChange={event => handleYearChange(event.target.value)}
+            onChange={({ target: { value } }) => handleYearChange(value)}
             onKeyDown={event => {
-              if (!/[0-9]/.test(event.key)) {
+              if (!/[0-9]/.test(event.key) && event.key !== "Backspace") {
                 event.preventDefault();
               }
             }}
-            onPaste={event => {
-              const pastedText = event.clipboardData.getData("text");
-              if (!/^\d+$/.test(pastedText)) {
-                event.preventDefault();
-              }
-            }}
+            // onPaste={event => {
+            //   const pastedText = event.clipboardData.getData("text");
+            //   if (!/^\d+$/.test(pastedText)) {
+            //     event.preventDefault();
+            //   }
+            // }}
           />
         </div>
         <div>
           <Typography className="mb-2 font-medium" variant="body1">
-            {t("labelText.type")}
+            {t("labels.type")}
           </Typography>
           <div className="flex gap-6">
             <Checkbox
               checked={!queryParams.type || queryParams.type === "movie"}
-              label={t("labelText.movie")}
+              labels={t("labels.movie")}
               onChange={() => handleTypeChange("movie")}
             />
             <Checkbox
               checked={!queryParams.type || queryParams.type === "series"}
-              label={t("labelText.series")}
+              labels={t("labels.series")}
               onChange={() => handleTypeChange("series")}
             />
           </div>

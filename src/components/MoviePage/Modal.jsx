@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { FallbackImage } from "components/utils/FallbackImage";
-import MovieDetailsConfig from "components/utils/MovieDetailsConfig";
+import movieDetailsConfig from "components/utils/movieDetailsConfig";
 import { useShowMovie } from "hooks/reactQuery/useMoviesApi";
+import useCamelCase from "hooks/useCamelCase";
 import { existsBy } from "neetocist";
 import { RatingFilled } from "neetoicons";
 import { Button, Modal as NeetoModal, Spinner, Tag, Typography } from "neetoui";
@@ -15,47 +16,49 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
 
   const { t } = useTranslation();
 
-  const favouriteMovies = useFavouriteMoviesStore.pickFrom();
-  const addFavouriteMovie = useFavouriteMoviesStore.pickFrom();
-  const removeFavouriteMovie = useFavouriteMoviesStore.pickFrom();
+  const { favouriteMovies, addFavouriteMovie, removeFavouriteMovie } =
+    useFavouriteMoviesStore.pick();
+  // const addFavouriteMovie = useFavouriteMoviesStore.pickFrom();
+  // const removeFavouriteMovie = useFavouriteMoviesStore.pickFrom();
 
   const { isLoading: isLoadingMovieDetails, data: movie = {} } =
     useShowMovie(imdbID);
 
+  const camelCaseMovie = useCamelCase(movie);
+
   const {
-    Title,
-    Year,
-    Genre,
-    Poster,
-    Plot,
-    Actors,
-    Director,
-    BoxOffice,
-    Runtime,
-    Language,
-    Rated,
-  } = movie;
+    title,
+    year,
+    genre,
+    plot,
+    actors,
+    director,
+    boxOffice,
+    runtime,
+    language,
+    rated,
+  } = camelCaseMovie;
 
-  const genres = Genre ? Genre.split(", ") : [];
+  const genres = genre ? genre.split(", ") : [];
 
-  const movieDetails = MovieDetailsConfig({
-    Director,
-    Actors,
-    BoxOffice,
-    Year,
-    Runtime,
-    Language,
-    Rated,
+  const movieDetails = movieDetailsConfig({
+    director,
+    actors,
+    boxOffice,
+    year,
+    runtime,
+    language,
+    rated,
   });
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
   const isTablet = useMediaQuery({ minWidth: 640, maxWidth: 767 });
   const isMobile = useMediaQuery({ maxWidth: 639 });
 
-  const isFavouritedMovie = existsBy({ imdbID }, favouriteMovies);
+  const isFavouriteMovie = existsBy({ imdbID }, favouriteMovies);
 
   const handleFavoriteClick = () => {
-    if (isFavouritedMovie) {
+    if (isFavouriteMovie) {
       removeFavouriteMovie(imdbID);
     } else {
       addFavouriteMovie(movie);
@@ -64,28 +67,27 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
 
   return (
     <NeetoModal
-      isOpen={isOpen}
+      {...{ isOpen, onClose }}
       size={classNames({
         large: isDesktop,
         medium: isTablet,
         small: isMobile,
       })}
-      onClose={onClose}
     >
       <Header>
         <div className="flex items-center gap-3">
           <Typography style="h2" weight="bold">
-            {Title}
+            {title}
           </Typography>
           {!isLoadingMovieDetails && (
             <Button
               className="focus:outline-none"
               style="link"
               tooltipProps={{
-                content: isFavouritedMovie
-                  ? t("labelText.removeFromFavourites")
-                  : t("labelText.addToFavourites"),
-                position: t("labelText.tooltipPosition"),
+                content: isFavouriteMovie
+                  ? t("labels.removeFromFavourites")
+                  : t("labels.addToFavourites"),
+                position: t("labels.tooltipPosition"),
               }}
               onClick={handleFavoriteClick}
             >
@@ -93,7 +95,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
                 size={24}
                 className={classNames(
                   "transition-colors duration-200",
-                  isFavouritedMovie
+                  isFavouriteMovie
                     ? "text-yellow-400"
                     : "text-gray-400 hover:text-yellow-400"
                 )}
@@ -126,7 +128,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
                 "w-1/3": !isMobile,
               })}
             >
-              <FallbackImage poster={Poster} title={Title} />
+              <FallbackImage {...camelCaseMovie} />
             </div>
             <div
               className={classNames("space-y-4 p-4", {
@@ -135,18 +137,18 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
               })}
             >
               <Typography component="i" style="body2" weight="light">
-                {Plot}
+                {plot}
               </Typography>
               <div className="space-y-2">
                 {movieDetails.map(({ label, value }) => (
                   <div className="flex items-center gap-2" key={label}>
                     <Typography style="body2">
                       <Trans
-                        i18nKey="labelText.movieDetails"
+                        i18nKey="labels.movieDetails"
                         values={{ label, value }}
                         components={{
-                          span1: <span className="font-bold" />,
-                          span2: <span />,
+                          bold: <span className="font-bold" />,
+                          span: <span />,
                         }}
                       />
                     </Typography>

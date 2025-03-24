@@ -5,16 +5,16 @@
     "home": "Home",
     "favourites": "Favourites"
   },
-  "sectionHeadings": {
+  "headings": {
     "historySection": "View history"
   },
   "inputPlaceholders": {
     "searchInput": "Search movies and series (Press / to focus)",
     "yearInput": "Enter year"
   },
-  "labelText": {
+  "labels": {
     "detailsButton": "View details",
-    "movieDetails": "<span1>{{label}}</span1>: <span2>{{value}}</span2>",
+    "movieDetails": "<bold>{{label}}</bold>: <span>{{value}}</span>",
     "movie": "Movie",
     "series": "Series",
     "director": "Director",
@@ -29,23 +29,35 @@
     "removeFromFavourites": "Remove from favourites",
     "type": "Type"
   },
-  "displayMessages": {
-    "movieInfo": "<span1> {{type}}</span1> • <span2> {{Year}}</span2>",
-    "emptyHistory": "No movies viewed yet",
-    "emptySearch": "No results found"
-  },
-  "errorMessages": {
-    "offline": "Please check your internet connection",
-    "connectionError": "Unable to connect to server. Please try again",
-    "movieError": "Error loading movie details",
-    "yearMinError": "Year must be at least 1888",
-    "yearMaxError": "Year must be less than or equal to {{maxYear}}",
-    "yearRequiredError": "Year is required"
-  },
-  "errorPages": {
-    "notFound": {
-      "title": "The page you're looking for can't be found",
-      "description": "Return to home page"
+  "messages": {
+    "display": {
+      "movieInfo": "<span1> {{type}}</span1> • <span2> {{year}}</span2>",
+      "emptyHistory": "No movies viewed yet",
+      "emptySearch": "No results found"
+    },
+    "error": {
+      "offline": "Please check your internet connection",
+      "connectionError": "Unable to connect to server. Please try again",
+      "movieError": "Error loading movie details",
+      "yearMinError": "Year must be at least 1888",
+      "yearMaxError": "Year must be less than or equal to {{maxYear}}",
+      "yearRequiredError": "Year is required",
+      "notFound": {
+        "title": "The page you're looking for can't be found",
+        "description": "Return to home page"
+      }
+    },
+    "alerts": {
+      "deleteMovie": {
+        "title": "Remove movie?",
+        "confirmButton": "Delete",
+        "message": "You are removing <strong>{{movieTitle}}</strong> from history. Do you want to continue? This action cannot be undone."
+      },
+      "clearHistory": {
+        "title": "Clear history",
+        "confirmButton": "Delete all",
+        "message": "Are you sure you want to clear all movies from history? This action cannot be undone."
+      }
     }
   },
   "historyMovieNames": "<span>{{Title}}</span>",
@@ -61,18 +73,6 @@
     "noFavorites": "No favorites yet. Add some movies to your favorites!",
     "movieRating": "<span1>Rating:</span1> <span2>{{rating}}/10</span2>",
     "movieTitle": "<span>{{title}}</span>"
-  },
-  "alerts": {
-    "deleteMovie": {
-      "title": "Remove movie?",
-      "confirmButton": "Delete",
-      "message": "You are removing <strong>{{movieTitle}}</strong> from history. Do you want to continue? This action cannot be undone."
-    },
-    "clearHistory": {
-      "title": "Clear history",
-      "confirmButton": "Delete all",
-      "message": "Are you sure you want to clear all movies from history? This action cannot be undone."
-    }
   },
   "buttons": {
     "clearAll": "Clear all"

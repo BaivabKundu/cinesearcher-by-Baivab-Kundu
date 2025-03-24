@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import useCamelCase from "hooks/useCamelCase";
 import { Button, Typography } from "neetoui";
 import { useTranslation, Trans } from "react-i18next";
 import useMoviesStore from "stores/useMoviesStore";
@@ -8,39 +9,42 @@ import Modal from "./Modal";
 
 import { FallbackImage } from "../utils/FallbackImage";
 
-const Card = ({ movie }) => {
+const Card = ({ ...movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { addMovieToHistory, setLastSelectedMovie } = useMoviesStore();
 
-  const { Title, Year, Poster, Type, imdbID } = movie;
+  const camelCaseMovie = useCamelCase(movie);
+
+  const { title, year, type } = camelCaseMovie;
 
   const { t } = useTranslation();
-
-  const type = Type === "movie" ? t("labelText.movie") : t("labelText.series");
 
   return (
     <div className="my-3 overflow-hidden rounded-lg border border-gray-200  bg-white shadow-md transition-all duration-200 hover:shadow-lg">
       <div className="mt-4 h-80 w-full overflow-hidden px-12">
-        <FallbackImage poster={Poster} title={Title} />
+        <FallbackImage {...camelCaseMovie} />
       </div>
       <div className="px-8 py-6 text-left">
         <Typography
           className="mb-2 text-3xl font-bold text-gray-800"
           variant="body1"
         >
-          {Title}
+          {title}
         </Typography>
         <Typography
           className="text-sm font-semibold text-gray-400"
           variant="body2"
         >
           <Trans
-            i18nKey="displayMessages.movieInfo"
-            values={{ type, Year }}
+            i18nKey="messages.display.movieInfo"
             components={{
               span1: <span />,
               span2: <span />,
+            }}
+            values={{
+              type: type === "movie" ? t("labels.movie") : t("labels.series"),
+              year,
             }}
           />
         </Typography>
@@ -53,12 +57,12 @@ const Card = ({ movie }) => {
             setLastSelectedMovie({ ...movie });
           }}
         >
-          {t("labelText.detailsButton")}
+          {t("labels.detailsButton")}
         </Button>
       </div>
       {isModalOpen && (
         <Modal
-          imdbID={imdbID}
+          {...camelCaseMovie}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

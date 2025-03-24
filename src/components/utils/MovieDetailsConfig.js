@@ -1,48 +1,46 @@
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
-const MovieDetailsConfig = ({
-  Director,
-  Actors,
-  BoxOffice,
-  Year,
-  Runtime,
-  Language,
-  Rated,
+const movieDetailsConfig = ({
+  director,
+  actors,
+  boxOffice,
+  year,
+  runtime,
+  language,
+  rated,
 }) => {
-  const { t } = useTranslation();
-
   const movieDetails = [
     {
-      label: t("labelText.director"),
-      value: Director,
+      label: t("labels.director"),
+      value: director,
     },
     {
-      label: t("labelText.actors"),
-      value: Actors,
+      label: t("labels.actors"),
+      value: actors,
     },
     {
-      label: t("labelText.boxOffice"),
-      value: BoxOffice,
+      label: t("labels.boxOffice"),
+      value: boxOffice,
     },
     {
-      label: t("labelText.year"),
-      value: Year,
+      label: t("labels.year"),
+      value: year,
     },
     {
-      label: t("labelText.runtime"),
-      value: Runtime,
+      label: t("labels.runtime"),
+      value: runtime,
     },
     {
-      label: t("labelText.language"),
-      value: Language,
+      label: t("labels.language"),
+      value: language,
     },
     {
-      label: t("labelText.rated"),
-      value: Rated,
+      label: t("labels.rated"),
+      value: rated,
     },
   ];
 
   return movieDetails;
 };
 
-export default MovieDetailsConfig;
+export default movieDetailsConfig;

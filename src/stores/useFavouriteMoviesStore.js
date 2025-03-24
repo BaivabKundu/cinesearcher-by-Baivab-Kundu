@@ -11,7 +11,7 @@ const useFavouriteMoviesStore = create(
         set(state => ({
           favouriteMovies: pipe(
             append(movie),
-            uniqBy(m => m.imdbID)
+            uniqBy(movie => movie.imdbID)
           )(state.favouriteMovies),
         })),
       removeFavouriteMovie: movieId =>
