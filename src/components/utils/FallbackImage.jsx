@@ -1,9 +1,9 @@
 import { DEFAULT_POSTER_URL } from "../MoviePage/constants";
 
-export const FallbackImage = ({ title, poster }) => (
+export const FallbackImage = ({ movie }) => (
   <img
-    alt={title}
+    alt={movie.title}
     className="neeto-ui-rounded-lg h-full w-full object-cover"
-    src={poster !== "N/A" ? poster : DEFAULT_POSTER_URL}
+    src={movie.poster !== "N/A" ? movie.poster : DEFAULT_POSTER_URL}
   />
 );

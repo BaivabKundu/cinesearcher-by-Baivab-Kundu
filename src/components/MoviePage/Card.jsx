@@ -14,16 +14,16 @@ const Card = ({ ...movie }) => {
 
   const { addMovieToHistory, setLastSelectedMovie } = useMoviesStore();
 
-  const camelCaseMovie = useCamelCase(movie);
+  const camelCasedMovie = useCamelCase(movie);
 
-  const { title, year, type } = camelCaseMovie;
+  const { title, year, type } = camelCasedMovie;
 
   const { t } = useTranslation();
 
   return (
     <div className="my-3 overflow-hidden rounded-lg border border-gray-200  bg-white shadow-md transition-all duration-200 hover:shadow-lg">
       <div className="mt-4 h-80 w-full overflow-hidden px-12">
-        <FallbackImage {...camelCaseMovie} />
+        <FallbackImage movie={camelCasedMovie} />
       </div>
       <div className="px-8 py-6 text-left">
         <Typography
@@ -62,7 +62,7 @@ const Card = ({ ...movie }) => {
       </div>
       {isModalOpen && (
         <Modal
-          {...camelCaseMovie}
+          {...movie}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

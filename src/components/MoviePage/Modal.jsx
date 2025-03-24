@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
   const { isLoading: isLoadingMovieDetails, data: movie = {} } =
     useShowMovie(imdbID);
 
-  const camelCaseMovie = useCamelCase(movie);
+  const camelCasedMovie = useCamelCase(movie);
 
   const {
     title,
@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
     runtime,
     language,
     rated,
-  } = camelCaseMovie;
+  } = camelCasedMovie;
 
   const genres = genre ? genre.split(", ") : [];
 
@@ -126,7 +126,7 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
                 "w-1/3": !isMobile,
               })}
             >
-              <FallbackImage {...camelCaseMovie} />
+              <FallbackImage movie={camelCasedMovie} />
             </div>
             <div
               className={classNames("space-y-4 p-4", {
