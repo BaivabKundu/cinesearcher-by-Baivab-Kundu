@@ -9,12 +9,6 @@ import withTitle from "utils/withTitle";
 const Favourites = () => {
   const favouriteMovies = useFavouriteMoviesStore.pickFrom();
 
-  // const hasHydrated = useFavouriteMoviesStore.persist.hasHydrated;
-
-  // if (!hasHydrated) {
-  //   return <PageLoader />;
-  // }
-
   return (
     <div className="mt-20 p-6">
       <div className="flex flex-col items-center space-y-4">

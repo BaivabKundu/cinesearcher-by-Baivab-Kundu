@@ -19,10 +19,6 @@ const ViewHistory = () => {
     clearAllMoviesFromHistory,
   } = useMoviesStore.pick();
 
-  // const lastSelectedMovie = useMoviesStore.pickFrom();
-  // const removeMovieFromHistory = useMoviesStore.pickFrom();
-  // const clearAllMoviesFromHistory = useMoviesStore.pickFrom();
-
   const historyRef = useRef(null);
   const itemRef = useRef(null);
 

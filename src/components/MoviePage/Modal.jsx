@@ -18,8 +18,6 @@ const Modal = ({ isOpen, onClose, imdbID }) => {
 
   const { favouriteMovies, addFavouriteMovie, removeFavouriteMovie } =
     useFavouriteMoviesStore.pick();
-  // const addFavouriteMovie = useFavouriteMoviesStore.pickFrom();
-  // const removeFavouriteMovie = useFavouriteMoviesStore.pickFrom();
 
   const { isLoading: isLoadingMovieDetails, data: movie = {} } =
     useShowMovie(imdbID);
